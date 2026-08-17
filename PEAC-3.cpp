@@ -1,45 +1,55 @@
-def heapify(arr, n, i):
-    largest = i
-    left = 2 * i + 1
-    right = 2 * i + 2
+#include <iostream>
+using namespace std;
 
-    # Check left child
-    if left < n and arr[left] > arr[largest]:
-        largest = left
+void heapify(int a[], int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
 
-    # Check right child
-    if right < n and arr[right] > arr[largest]:
-        largest = right
+    if (left < n && a[left] > a[largest])
+        largest = left;
 
-    # If largest is not the root
-    if largest != i:
-        arr[i], arr[largest] = arr[largest], arr[i]
+    if (right < n && a[right] > a[largest])
+        largest = right;
 
-        # Recursively heapify the affected subtree
-        heapify(arr, n, largest)
+    if (largest != i)
+    {
+        swap(a[i], a[largest]);
+        heapify(a, n, largest);
+    }
+}
 
+void heapSort(int a[], int n)
+{
+    // Create Max Heap
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(a, n, i);
 
-def heap_sort(arr):
-    n = len(arr)
+    // Sorting
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(a[0], a[i]);
+        heapify(a, i, 0);
+    }
+}
 
-    # Build Max Heap
-    for i in range(n // 2 - 1, -1, -1):
-        heapify(arr, n, i)
+int main()
+{
+    int a[] = {12, 11, 13, 5, 6, 7};
+    int n = 6;
 
-    # Extract elements one by one
-    for i in range(n - 1, 0, -1):
-        # Move maximum element to the end
-        arr[0], arr[i] = arr[i], arr[0]
+    cout << "Before sorting: ";
 
-        # Restore Max Heap
-        heapify(arr, i, 0)
+    for (int i = 0; i < n; i++)
+        cout << a[i] << " ";
 
+    heapSort(a, n);
 
-# Example
-arr = [12, 11, 13, 5, 6, 7]
+    cout << "\nAfter sorting: ";
 
-print("Before sorting:", arr)
+    for (int i = 0; i < n; i++)
+        cout << a[i] << " ";
 
-heap_sort(arr)
-
-print("After sorting:", arr)
+    return 0;
+}
