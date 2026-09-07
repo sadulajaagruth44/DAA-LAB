@@ -1,62 +1,27 @@
-\\---Bubble Sort---
 #include <iostream>
+#include <chrono>
+#include <ctime>
 using namespace std;
+using namespace chrono;
 
-int main()
+// Bubble Sort
+void bubbleSort(int arr[], int n)
 {
-    int n, arr[100];
-
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    cout << "Enter elements: ";
-    for(int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-
-    // Bubble Sort
     for(int i = 0; i < n - 1; i++)
     {
         for(int j = 0; j < n - i - 1; j++)
         {
             if(arr[j] > arr[j + 1])
             {
-                int temp = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = temp;
+                swap(arr[j], arr[j + 1]);
             }
         }
     }
-
-    cout << "Sorted array: ";
-
-    for(int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
-
-    return 0;
 }
 
-\\---Selection sort---
-#include <iostream>
-using namespace std;
-
-int main()
+// Selection Sort
+void selectionSort(int arr[], int n)
 {
-    int n, arr[100];
-
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    cout << "Enter elements: ";
-    for(int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-
-    // Selection Sort
     for(int i = 0; i < n - 1; i++)
     {
         int min = i;
@@ -69,40 +34,13 @@ int main()
             }
         }
 
-        int temp = arr[i];
-        arr[i] = arr[min];
-        arr[min] = temp;
+        swap(arr[i], arr[min]);
     }
-
-    cout << "Sorted array: ";
-
-    for(int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
-
-    return 0;
 }
 
-
-\\---insertion sort---
-#include <iostream>
-using namespace std;
-
-int main()
+// Insertion Sort
+void insertionSort(int arr[], int n)
 {
-    int n, arr[100];
-
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    cout << "Enter elements: ";
-    for(int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-
-    // Insertion Sort
     for(int i = 1; i < n; i++)
     {
         int key = arr[i];
@@ -116,21 +54,9 @@ int main()
 
         arr[j + 1] = key;
     }
-
-    cout << "Sorted array: ";
-
-    for(int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
-
-    return 0;
 }
 
-\\---merge sort---
-#include <iostream>
-using namespace std;
-
+// Merge Function
 void merge(int arr[], int low, int mid, int high)
 {
     int temp[100];
@@ -141,40 +67,25 @@ void merge(int arr[], int low, int mid, int high)
 
     while(i <= mid && j <= high)
     {
-        if(arr[i] < arr[j])
-        {
-            temp[k] = arr[i];
-            i++;
-        }
+        if(arr[i] <= arr[j])
+            temp[k++] = arr[i++];
         else
-        {
-            temp[k] = arr[j];
-            j++;
-        }
-
-        k++;
+            temp[k++] = arr[j++];
     }
 
     while(i <= mid)
-    {
-        temp[k] = arr[i];
-        i++;
-        k++;
-    }
+        temp[k++] = arr[i++];
 
     while(j <= high)
-    {
-        temp[k] = arr[j];
-        j++;
-        k++;
-    }
+        temp[k++] = arr[j++];
 
-    for(i = low; i <= high; i++)
+    for(int i = low; i <= high; i++)
     {
         arr[i] = temp[i];
     }
 }
 
+// Merge Sort
 void mergeSort(int arr[], int low, int high)
 {
     if(low < high)
@@ -188,70 +99,31 @@ void mergeSort(int arr[], int low, int high)
     }
 }
 
-int main()
-{
-    int n, arr[100];
-
-    cout << "Enter number of elements: ";
-    cin >> n;
-
-    cout << "Enter elements: ";
-
-    for(int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-
-    mergeSort(arr, 0, n - 1);
-
-    cout << "Sorted array: ";
-
-    for(int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
-
-    return 0;
-}
-
-\\---quick sort---
-#include <iostream>
-using namespace std;
-
+// Partition Function (First Element as Pivot)
 int partition(int arr[], int low, int high)
 {
     int pivot = arr[low];
-
     int i = low;
     int j = high;
 
     while(i < j)
     {
         while(arr[i] <= pivot && i < high)
-        {
             i++;
-        }
 
-        while(arr[j] > pivot)
-        {
+        while(arr[j] > pivot && j > low)
             j--;
-        }
 
         if(i < j)
-        {
-            int temp = arr[i];
-            arr[i] = arr[j];
-            arr[j] = temp;
-        }
+            swap(arr[i], arr[j]);
     }
 
-    int temp = arr[low];
-    arr[low] = arr[j];
-    arr[j] = temp;
+    swap(arr[low], arr[j]);
 
     return j;
 }
 
+// Quick Sort
 void quickSort(int arr[], int low, int high)
 {
     if(low < high)
@@ -265,26 +137,77 @@ void quickSort(int arr[], int low, int high)
 
 int main()
 {
-    int n, arr[100];
+    const int n = 100;
 
-    cout << "Enter number of elements: ";
-    cin >> n;
+    int arr[n];
+    int temp[n];
 
-    cout << "Enter elements: ";
-
-    for(int i = 0; i < n; i++)
-    {
-        cin >> arr[i];
-    }
-
-    quickSort(arr, 0, n - 1);
-
-    cout << "Sorted array: ";
+    srand(time(0));
 
     for(int i = 0; i < n; i++)
-    {
-        cout << arr[i] << " ";
-    }
+        arr[i] = rand() % 1000;
+
+    cout << "Number of Elements = " << n << "\n\n";
+
+    // Bubble Sort
+    for(int i = 0; i < n; i++)
+        temp[i] = arr[i];
+
+    auto start = high_resolution_clock::now();
+    bubbleSort(temp, n);
+    auto stop = high_resolution_clock::now();
+
+    cout << "Bubble Sort Time    : "
+         << duration_cast<microseconds>(stop - start).count()
+         << " microseconds\n";
+
+    // Selection Sort
+    for(int i = 0; i < n; i++)
+        temp[i] = arr[i];
+
+    start = high_resolution_clock::now();
+    selectionSort(temp, n);
+    stop = high_resolution_clock::now();
+
+    cout << "Selection Sort Time : "
+         << duration_cast<microseconds>(stop - start).count()
+         << " microseconds\n";
+
+    // Insertion Sort
+    for(int i = 0; i < n; i++)
+        temp[i] = arr[i];
+
+    start = high_resolution_clock::now();
+    insertionSort(temp, n);
+    stop = high_resolution_clock::now();
+
+    cout << "Insertion Sort Time : "
+         << duration_cast<microseconds>(stop - start).count()
+         << " microseconds\n";
+
+    // Merge Sort
+    for(int i = 0; i < n; i++)
+        temp[i] = arr[i];
+
+    start = high_resolution_clock::now();
+    mergeSort(temp, 0, n - 1);
+    stop = high_resolution_clock::now();
+
+    cout << "Merge Sort Time     : "
+         << duration_cast<microseconds>(stop - start).count()
+         << " microseconds\n";
+
+    // Quick Sort
+    for(int i = 0; i < n; i++)
+        temp[i] = arr[i];
+
+    start = high_resolution_clock::now();
+    quickSort(temp, 0, n - 1);
+    stop = high_resolution_clock::now();
+
+    cout << "Quick Sort Time     : "
+         << duration_cast<microseconds>(stop - start).count()
+         << " microseconds\n";
 
     return 0;
 }
